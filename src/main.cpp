@@ -7,7 +7,7 @@
 
 #ifndef BEACON
 
-    BLEScan *pBLEScan;
+    BLEScan *pBLEScan; 
 
     const int scanTimeSeconds = 1;
 
@@ -20,6 +20,17 @@
             {
                 Serial.print(advertisedDevice.getName().c_str());
                 Serial.printf(": %d \n", advertisedDevice.getRSSI());
+                std::string temp = std::string(advertisedDevice.getManufacturerData().c_str());
+                std::string delimiter = "&";
+
+                size_t pos = 0;
+                std::string token;
+                while ((pos = temp.find(delimiter)) != std::string::npos) {
+                    token = temp.substr(0, pos);
+                    Serial.printf(": %s \n", token);
+                    temp.erase(0, pos + delimiter.length());
+                }
+
                 Serial.printf(": %s \n", advertisedDevice.getManufacturerData().c_str());
             }
         }
