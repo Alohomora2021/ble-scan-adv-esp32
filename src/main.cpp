@@ -30,8 +30,6 @@
                     Serial.printf(": %s \n", token);
                     temp.erase(0, pos + delimiter.length());
                 }
-
-                Serial.printf(": %s \n", advertisedDevice.getManufacturerData().c_str());
             }
         }
     };
