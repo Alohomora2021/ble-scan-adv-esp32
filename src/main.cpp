@@ -16,21 +16,30 @@
     {
         void onResult(BLEAdvertisedDevice advertisedDevice)
         {
-            if (strcmp(advertisedDevice.getName().c_str(), "Radiation") >= 0)
+            if (strcmp(advertisedDevice.getName().c_str(), "696e74706c61666f6e64") >= 0)
             {
-                Serial.print(advertisedDevice.getName().c_str());
-                Serial.printf(": %d \n", advertisedDevice.getRSSI());
-                std::string temp = std::string(advertisedDevice.getManufacturerData().c_str());
-                std::string delimiter = "&";
+                String temp = advertisedDevice.getName().c_str();
+                String code = "696e74706c61666f6e64";
+                if(temp.equals(code)) Serial.printf(": %d \n", advertisedDevice.getRSSI());
+                //String temp = advertisedDevice.getManufacturerData().c_str();
+                // Serial.println(getValue(temp, '&', 0));
+            }     
+        }
 
-                size_t pos = 0;
-                std::string token;
-                while ((pos = temp.find(delimiter)) != std::string::npos) {
-                    token = temp.substr(0, pos);
-                    Serial.printf(": %s \n", token);
-                    temp.erase(0, pos + delimiter.length());
+        String getValue(String data, char separator, int index)
+        {
+            int found = 0;
+            int strIndex[] = { 0, -1 };
+            int maxIndex = data.length() - 1;
+
+            for (int i = 0; i <= maxIndex && found <= index; i++) {
+                if (data.charAt(i) == separator || i == maxIndex) {
+                    found++;
+                    strIndex[0] = strIndex[1] + 1;
+                    strIndex[1] = (i == maxIndex) ? i+1 : i;
                 }
             }
+            return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
         }
     };
 
